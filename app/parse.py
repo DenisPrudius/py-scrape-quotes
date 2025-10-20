@@ -5,7 +5,8 @@ import requests
 from bs4 import BeautifulSoup, Tag
 
 
-BASE_URL= "https://quotes.toscrape.com/"
+BASE_URL = "https://quotes.toscrape.com/"
+
 
 @dataclass
 class Quote:
@@ -13,7 +14,9 @@ class Quote:
     author: str
     tags: list[str]
 
+
 QUOTE_FIELDS = [field.name for field in fields(Quote)]
+
 
 def parse_quotes(quote: Tag) -> Quote:
     return Quote(
@@ -21,6 +24,7 @@ def parse_quotes(quote: Tag) -> Quote:
         author=quote.select_one(".author").text,
         tags=[tag.text for tag in quote.select(".tag")]
     )
+
 
 def get_all_quotes() -> list[Quote]:
     all_quotes: list[Quote] = []
@@ -43,7 +47,8 @@ def get_all_quotes() -> list[Quote]:
 
     return all_quotes
 
-def write_quotes_to_csv(quotes: [Quote], output_csv_path: str ) -> None:
+
+def write_quotes_to_csv(quotes: [Quote], output_csv_path: str) -> None:
     with open(output_csv_path, "w") as f:
         writer = csv.writer(f)
         writer.writerow(QUOTE_FIELDS)
@@ -57,4 +62,3 @@ def main(output_csv_path: str) -> None:
 
 if __name__ == "__main__":
     main("quotes.csv")
-
